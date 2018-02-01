@@ -1,0 +1,58 @@
+<html>
+    <head>
+        <!-- <script src="script.js"></script> -->
+		<script src="js-struct.js"></script>
+		<script src="trk_header.js"></script>
+		<script type="text/javascript">
+			
+			function findFile(files, fun) {
+				for (var i = 0, numFiles = files.length; i < numFiles; i++) {
+				  if (fun(files[i])) return files[i];
+				}
+			};
+			
+			function selectFolder(e) {
+				var files, sceneFile, trkFile;
+				files = e.target.files;
+				sceneFile = findFile(files, function (file) { return file.name.endsWith('.scene')});
+				
+				var reader = new FileReader();
+				reader.onload = function(event) {
+					xmlSceneString = event.target.result;
+					
+					// Remove the comment part, leave only the content of the <Scene> tag
+					var start = xmlSceneString.indexOf('<Scene');
+					var endSubstring = '/Scene>';
+					var end = xmlSceneString.indexOf(endSubstring) + endSubstring.length;
+					xmlSceneString = xmlSceneString.substring(start, end);
+					
+					// There is an invalid tag with the # sign in it
+					xmlSceneString = xmlSceneString.replace(/#/g, "__hash__");
+					
+					// Parse the Scene
+					var parser = new DOMParser();
+					xmlScene = parser.parseFromString(xmlSceneString, "text/xml");
+					
+					tracks = xmlScene.getElementsByTagName('Track');
+					// ROIs = ...
+					// planes = ...
+					// etc.
+					
+					// Read tracks from .trk
+					var trackFileElement = xmlScene.getElementsByTagName('TrackFile')[0];
+					var trackFileName = trackFileElement.getAttribute('rpath');
+					trkFile = findFile(files, function (file) { return file.name == trackFileName });
+					readHeader(trkFile);
+				};
+				reader.readAsText(sceneFile);
+				
+			}
+		</script>
+    </head>
+	<body>
+		<input type="file" 
+			   value="Browser Folder" 
+			   onChange="selectFolder(event)" 
+			   webkitdirectory directory>
+	</body>
+</html>
