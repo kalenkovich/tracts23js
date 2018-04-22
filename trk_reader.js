@@ -93,10 +93,13 @@ onmessage = function(e) {
 	var files = e.data;
 
 	sceneFile = findFilesWithExtension(files, '.scene')[0];
+	console.log("Parsing the scene");
 	var scene = processSceneFile(sceneFile);
 	
 	trkFile = findFileByName(files, scene.trackFileName);
+	console.log("Reading individual fibers");
 	var trk = readTRKFile(trkFile);
+	console.log("Finished reading individual fibers");
 	
 	niiFiles = findFilesWithExtension(files, '.nii');
 	ROIs = processROIs(scene, niiFiles, trk);
