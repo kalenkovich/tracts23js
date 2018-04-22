@@ -1,4 +1,5 @@
 var browse = document.querySelector("#browse");
+var status = document.getElementById("status");
 
 if (window.Worker) { // Check if Browser supports the Worker api.
 	
