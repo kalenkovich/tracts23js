@@ -51,7 +51,7 @@ function processSceneFile(sceneFile) {
 
 	
 	tractsXML = xmlScene.getElementsByTagName('Track');
-	ROIsXML = xmlScene.getElementsByTagName('ROI');
+	ROIsXML = xmlScene.getElementsByTagName('ROIs').item(0).childNodes;
 	
 	function get_xyz(element) {
 		var x, y, z;
