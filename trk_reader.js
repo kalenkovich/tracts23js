@@ -1,6 +1,8 @@
 // XML parsing in web worker
 importScripts("jsXMLParser/compressed/tinyxmlw3cdom.js");
 importScripts("jsXMLParser/compressed/tinyxmlsax.js");
+// plus some helper functions
+importScripts("xml_helpers.js");
 
 // Read .trk file
 importScripts("trk.js");
